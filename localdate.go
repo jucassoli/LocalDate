@@ -52,43 +52,43 @@ type Formatter interface {
 	Convert() string
 }
 
-// MakeFormatter definition.
+// MakeFormatter buids an object with the time to be formatted.
 func MakeFormatter(t *time.Time) FormattedDate {
 	return FormattedDate{timeToConvert: *t}
 }
 
-// FormattedDate definition.
+// FormattedDate main object structure .
 type FormattedDate struct {
 	maskSlice     []string
 	maskDone      string
 	timeToConvert time.Time
 }
 
-// AppendToken definition.
+// AppendToken appends a token to the mask.
 func (f *FormattedDate) AppendToken(t string) Formatter {
 	f.maskSlice = append(f.maskSlice, t)
 	return f
 }
 
-// GenerateMask definition.
+// GenerateMask builds a mask.
 func (f *FormattedDate) GenerateMask() Formatter {
 	f.maskDone = strings.Join(f.maskSlice, "")
 	return f
 }
 
-// GenerateWithAllBetween definition.
+// GenerateWithAllBetween builds a mask joining all parts with the given string.
 func (f *FormattedDate) GenerateWithAllBetween(token string) Formatter {
 	f.maskDone = strings.Join(f.maskSlice, token)
 	return f
 }
 
-// Convert definition.
+// Convert do the formatting conversion.
 func (f *FormattedDate) Convert() string {
 	mask := f.GetMask()
 	return f.timeToConvert.Format(mask)
 }
 
-// GetMask definition.
+// GetMask returns the mask.
 func (f *FormattedDate) GetMask() string {
 	if len(f.maskDone) == 0 {
 		f.GenerateMask()
