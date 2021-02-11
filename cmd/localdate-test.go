@@ -10,7 +10,11 @@ import (
 func main() {
 	now := time.Now()
 
-	res := localdate.Format(now)
+	res := localdate.MakeFormatter(&now)
+	res.AppendToken(localdate.LongMonthToken).AppendToken(localdate.DayToken).AppendToken(localdate.LongYearToken)
+	res.GenerateWithAllBetween("-")
+	result := res.Convert()
 
-	fmt.Printf("-- %v  -- > %T", res, now)
+	fmt.Printf("-- %v  -- > %T", result, result)
+
 }
